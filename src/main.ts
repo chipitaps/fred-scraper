@@ -271,12 +271,14 @@ async function main() {
                                                     offset,
                                                 });
 
-                                                // Charge for observation fetch if pay-per-event pricing
-                                                if (isPayPerEvent) {
-                                                    await Actor.charge({ eventName: 'observation-fetch' });
-                                                }
-
                                                 if (obsResponse.observations && obsResponse.observations.length > 0) {
+                                                    // Charge for each observation item if pay-per-event pricing
+                                                    if (isPayPerEvent) {
+                                                        for (const observation of obsResponse.observations) {
+                                                            await Actor.charge({ eventName: 'observation-fetch' });
+                                                        }
+                                                    }
+                                                    
                                                     allObservations.push(...obsResponse.observations);
                                                     
                                                     // Check if there are more observations to fetch
