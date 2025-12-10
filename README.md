@@ -1,15 +1,13 @@
-# FRED Scraper
+Automate your economic research with comprehensive data collection from the Federal Reserve Economic Data (FRED) database.
 
-🚀 Supercharge your economic research with automated collection of economic data from the Federal Reserve Economic Data (FRED) database!
-
-The FRED Scraper automates the collection of economic data series from the Federal Reserve Economic Data API, giving you access to thousands of economic indicators including CPI, GDP, unemployment rates, interest rates, and much more. Perfect for economists, researchers, analysts, and data scientists who need accurate, up-to-date economic intelligence without manual work.
+This tool streamlines the collection of economic data series from the Federal Reserve Economic Data API, providing access to thousands of economic indicators including CPI, GDP, unemployment rates, interest rates, and much more. Designed for economists, researchers, analysts, and data scientists who need accurate, up-to-date economic intelligence without manual data gathering.
 
 **Target Audience:** Economists, researchers, financial analysts, data scientists, academics, policy makers
 **Primary Use Cases:** Economic research, market analysis, data collection for reports, academic studies, financial modeling
 
-## What Does FRED Scraper Do?
+## What Does This Tool Do?
 
-This tool collects economic data series from the Federal Reserve Economic Data (FRED) database, supporting both search-based discovery and direct series access. It delivers:
+This tool collects economic data series from the Federal Reserve Economic Data (FRED) database through search-based discovery. It delivers:
 
 - **Series Metadata**: Complete information about each economic data series including title, units, frequency, and seasonal adjustment
 - **Search Capabilities**: Full-text search across thousands of economic indicators
@@ -29,9 +27,10 @@ _Watch this demo to see how easy it is to get started!_
 To start collecting FRED economic data, simply fill in the input form. You can search for economic series using:
 
 - **Search Text** - Enter keywords to find economic data series (e.g., "cpi", "unemployment", "gdp")
-- **Series ID** - Enter a specific FRED series identifier (e.g., "CPIAUCSL", "UNRATE", "GDP")
 - **Filters** - Refine results by category, frequency, units, and seasonal adjustment
+- **Sort Options** - Control how results are sorted (by popularity, title, date, etc.)
 - **Max Items** - Set the maximum number of series to collect (Free users: Limited to 100. Paid users: Optional, max 1,000,000)
+- **Include Observations** - Optionally include historical data points for each series (increases processing time and cost)
 
 Here's what the input configuration looks like in JSON:
 
@@ -95,7 +94,7 @@ Here's an example of scraped FRED data you'll get if you search for "cpi":
 
 **Download Options:** CSV, Excel, or JSON formats for easy analysis in your preferred tools
 
-## Why Choose the FRED Scraper?
+## Why Choose This Tool?
 
 - **Comprehensive Coverage**: Access thousands of economic data series from the Federal Reserve
 - **Time Savings**: Automate data collection that would take hours manually
@@ -111,8 +110,8 @@ Here's an example of scraped FRED data you'll get if you search for "cpi":
 ## How to Use
 
 1. **Sign Up**: [Create a free account w/ $5 credit](https://console.apify.com/sign-up?fpr=vmoqkp) (takes 2 minutes)
-2. **Find the Scraper**: Visit the FRED Scraper page
-3. **Set Input**: Add your search query or series ID (we'll show you exactly what to enter)
+2. **Find the Tool**: Visit the FRED Scraper page
+3. **Set Input**: Add your search query and configure filters (we'll show you exactly what to enter)
 4. **Run It**: Click "Start" and let it collect your economic data
 5. **Download Data**: Get your results in the "Dataset" tab as CSV, Excel, or JSON
 
@@ -151,9 +150,9 @@ Here's an example of scraped FRED data you'll get if you search for "cpi":
 - Collect data for market research and analysis
 - Monitor economic trends relevant to industry
 
-## Using FRED Scraper with the Apify API
+## Using with the Apify API
 
-For advanced users who want to automate this process, you can control the scraper programmatically with the Apify API. This allows you to schedule regular data collection and integrate with your existing business tools.
+For advanced users who want to automate this process, you can control the tool programmatically with the Apify API. This allows you to schedule regular data collection and integrate with your existing business tools.
 
 - **Node.js**: Install the apify-client NPM package
 - **Python**: Use the apify-client PyPI package
@@ -162,7 +161,7 @@ For advanced users who want to automate this process, you can control the scrape
 ## Frequently Asked Questions
 
 **Q: How does it work?**
-A: FRED Scraper collects economic data series from the Federal Reserve Economic Data (FRED) database. Simply enter your search query or series ID, and the tool automatically retrieves all matching economic data series with complete metadata.
+A: This tool collects economic data series from the Federal Reserve Economic Data (FRED) database. Simply enter your search query, and the tool automatically retrieves all matching economic data series with complete metadata.
 
 **Q: How accurate is the data?**
 A: All data comes directly from the Federal Reserve Economic Data (FRED) database, ensuring accuracy and reliability. The data is updated regularly and matches what you would find on the FRED website.
@@ -182,9 +181,9 @@ A: Our support team is here to help you get the most out of this tool. Contact u
 **Q: Is my data secure?**
 A: Yes, all data collection happens securely through Apify's platform. Your data is private and secure.
 
-## Integrate FRED Scraper with any app and automate your workflow
+## Integrate with any app and automate your workflow
 
-Last but not least, FRED Scraper can be connected with almost any cloud service or web app thanks to [integrations](https://apify.com/integrations) on the Apify platform.
+This tool can be connected with almost any cloud service or web app thanks to [integrations](https://apify.com/integrations) on the Apify platform.
 
 These includes:
 
@@ -196,7 +195,7 @@ These includes:
 - [Google Drive](https://docs.apify.com/platform/integrations/drive)
 - and [much more](https://docs.apify.com/platform/integrations).
 
-Alternatively, you can use webhooks to carry out an action whenever an event occurs, e.g. get a notification whenever FRED Scraper successfully finishes a run.
+Alternatively, you can use webhooks to carry out an action whenever an event occurs, e.g. get a notification whenever the scraper successfully finishes a run.
 
 ## 🔗 Recommended Actors
 
