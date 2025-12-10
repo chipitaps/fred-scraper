@@ -271,6 +271,11 @@ async function main() {
                                                     offset,
                                                 });
 
+                                                // Charge for observation fetch if pay-per-event pricing
+                                                if (isPayPerEvent) {
+                                                    await Actor.charge({ eventName: 'observation-fetch' });
+                                                }
+
                                                 if (obsResponse.observations && obsResponse.observations.length > 0) {
                                                     allObservations.push(...obsResponse.observations);
                                                     
