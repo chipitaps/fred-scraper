@@ -249,14 +249,15 @@ async function main() {
                             }
 
                             if (input.includeObservations && uniqueSeries.length > 0) {
-                                // Fetch observations with concurrency control to respect rate limits
-                                const MAX_CONCURRENT_OBSERVATION_REQUESTS = 5; // Limit concurrent observation requests
+                                // Fetch observations in batches of 120 (rate limit), then wait 1 minute before next batch
+                                const OBSERVATION_BATCH_SIZE = 120; // Match API rate limit
                                 const observationsMap = new Map<string, import('./types.js').FredObservation[]>();
                                 
-                                // Process observations in batches to control concurrency
-                                for (let i = 0; i < uniqueSeries.length; i += MAX_CONCURRENT_OBSERVATION_REQUESTS) {
-                                    const batch = uniqueSeries.slice(i, i + MAX_CONCURRENT_OBSERVATION_REQUESTS);
+                                // Process observations in batches of 120
+                                for (let i = 0; i < uniqueSeries.length; i += OBSERVATION_BATCH_SIZE) {
+                                    const batch = uniqueSeries.slice(i, i + OBSERVATION_BATCH_SIZE);
                                     
+                                    // Fetch all observations for this batch in parallel
                                     const observationPromises = batch.map(async (series) => {
                                         try {
                                             const allObservations: import('./types.js').FredObservation[] = [];
@@ -304,6 +305,12 @@ async function main() {
                                         if (result.observations.length > 0) {
                                             observationsMap.set(result.seriesId, result.observations);
                                         }
+                                    }
+                                    
+                                    // Wait 1 minute before fetching next batch (unless this is the last batch)
+                                    if (i + OBSERVATION_BATCH_SIZE < uniqueSeries.length) {
+                                        log.info(`⏳ Fetched observations for ${Math.min(i + OBSERVATION_BATCH_SIZE, uniqueSeries.length)}/${uniqueSeries.length} series. Waiting 1 minute before next batch...`);
+                                        await new Promise(resolve => setTimeout(resolve, 60000)); // Wait 1 minute
                                     }
                                 }
 
