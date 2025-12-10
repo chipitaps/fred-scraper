@@ -14,9 +14,8 @@ export interface ApiRequestParams {
     search_text?: string;
     series_id?: string;
     category_id?: number;
-    frequency?: string;
-    units?: string;
-    seasonal_adjustment?: string;
+    filter_variable?: 'frequency' | 'units' | 'seasonal_adjustment';
+    filter_value?: string;
     search_type?: 'full_text' | 'series_id';
     order_by?: string;
     sort_order?: 'asc' | 'desc';
@@ -43,16 +42,10 @@ function buildQueryParams(params: ApiRequestParams): URLSearchParams {
         queryParams.append('category_id', params.category_id.toString());
     }
     
-    if (params.frequency) {
-        queryParams.append('frequency', params.frequency);
-    }
-    
-    if (params.units) {
-        queryParams.append('units', params.units);
-    }
-    
-    if (params.seasonal_adjustment) {
-        queryParams.append('seasonal_adjustment', params.seasonal_adjustment);
+    // FRED API uses filter_variable and filter_value for filtering
+    if (params.filter_variable && params.filter_value) {
+        queryParams.append('filter_variable', params.filter_variable);
+        queryParams.append('filter_value', params.filter_value);
     }
     
     if (params.search_type) {
@@ -248,16 +241,17 @@ export function calculateApiRequests(
             params.category_id = input.categoryId;
         }
         
+        // FRED API only supports one filter at a time via filter_variable/filter_value
+        // Priority: frequency > units > seasonalAdjustment
         if (input.frequency) {
-            params.frequency = input.frequency;
-        }
-        
-        if (input.units) {
-            params.units = input.units;
-        }
-        
-        if (input.seasonalAdjustment) {
-            params.seasonal_adjustment = input.seasonalAdjustment;
+            params.filter_variable = 'frequency';
+            params.filter_value = input.frequency;
+        } else if (input.units) {
+            params.filter_variable = 'units';
+            params.filter_value = input.units;
+        } else if (input.seasonalAdjustment) {
+            params.filter_variable = 'seasonal_adjustment';
+            params.filter_value = input.seasonalAdjustment;
         }
         
         // Only override search_type if explicitly provided (not when we set it for seriesId)
