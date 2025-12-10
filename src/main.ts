@@ -61,9 +61,37 @@ async function main() {
         let totalCount = 0;
 
         const desiredCount = maxItems || 1000;
-        const apiRequests = calculateApiRequests(desiredCount, input);
-
-
+        
+        // Count how many filters are active (frequency, units, seasonalAdjustment)
+        const activeFilters: string[] = [];
+        if (input.frequency) activeFilters.push('frequency');
+        if (input.units) activeFilters.push('units');
+        if (input.seasonalAdjustment) activeFilters.push('seasonalAdjustment');
+        
+        // If multiple filters are active, fetch more results and filter client-side
+        // This ensures all filters work together with equal priority
+        const fetchCount = activeFilters.length > 1 
+            ? Math.min(desiredCount * 5, 10000) // Fetch more to account for client-side filtering
+            : desiredCount;
+        
+        // Create input with only the first filter for API call (FRED API limitation)
+        const apiInput = { ...input };
+        if (activeFilters.length > 1) {
+            // Use frequency as primary filter if available, otherwise units, otherwise seasonalAdjustment
+            if (input.frequency) {
+                apiInput.units = undefined;
+                apiInput.seasonalAdjustment = undefined;
+            } else if (input.units) {
+                apiInput.frequency = undefined;
+                apiInput.seasonalAdjustment = undefined;
+            } else if (input.seasonalAdjustment) {
+                apiInput.frequency = undefined;
+                apiInput.units = undefined;
+            }
+            apiInput.maxItems = fetchCount;
+        }
+        
+        const apiRequests = calculateApiRequests(fetchCount, apiInput);
         const allSeries: OutputSeries[] = [];
         const seenSeriesIds = new Set<string>();
 
@@ -114,13 +142,31 @@ async function main() {
                         }
 
                         if (response.seriess.length > 0) {
-                            const uniqueSeries = response.seriess.filter(series => {
+                            // First deduplicate
+                            let uniqueSeries = response.seriess.filter(series => {
                                 if (seenSeriesIds.has(series.id)) {
                                     return false;
                                 }
                                 seenSeriesIds.add(series.id);
                                 return true;
                             });
+                            
+                            // Apply client-side filtering for all active filters (equal priority)
+                            if (activeFilters.length > 1) {
+                                uniqueSeries = uniqueSeries.filter(series => {
+                                    // Check all filters - series must match ALL active filters
+                                    if (input.frequency && series.frequency !== input.frequency) {
+                                        return false;
+                                    }
+                                    if (input.units && series.units !== input.units) {
+                                        return false;
+                                    }
+                                    if (input.seasonalAdjustment && series.seasonal_adjustment !== input.seasonalAdjustment) {
+                                        return false;
+                                    }
+                                    return true;
+                                });
+                            }
 
                             if (input.includeObservations && uniqueSeries.length > 0) {
                                 // Fetch observations in parallel
