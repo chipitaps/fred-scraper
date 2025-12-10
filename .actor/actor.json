@@ -35,6 +35,7 @@
                             "groupPopularity",
                             "notes",
                             "seriesUrl",
+                            "observations",
                             "scrapedTimestamp",
                             "error"
                         ]
