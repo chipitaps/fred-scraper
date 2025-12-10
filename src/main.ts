@@ -249,49 +249,61 @@ async function main() {
                             }
 
                             if (input.includeObservations && uniqueSeries.length > 0) {
-                                // Fetch observations in parallel with pagination to get all observations
-                                const observationPromises = uniqueSeries.map(async (series) => {
-                                    try {
-                                        const allObservations: import('./types.js').FredObservation[] = [];
-                                        let offset = 0;
-                                        const limit = MAX_API_PAGE_SIZE; // 1000 per request
-                                        let hasMore = true;
-
-                                        while (hasMore) {
-                                            const obsResponse = await fetchSeriesObservations(series.id, {
-                                                limit,
-                                                offset,
-                                            });
-
-                                            if (obsResponse.observations && obsResponse.observations.length > 0) {
-                                                allObservations.push(...obsResponse.observations);
-                                                
-                                                // Check if there are more observations to fetch
-                                                if (obsResponse.observations.length < limit || allObservations.length >= obsResponse.count) {
-                                                    hasMore = false;
-                                                } else {
-                                                    offset += limit;
-                                                }
-                                            } else {
-                                                hasMore = false;
-                                            }
-                                        }
-
-                                        return { seriesId: series.id, observations: allObservations };
-                                    } catch (error) {
-                                        log.warning(`⚠️ Failed to fetch observations for series ${series.id}`, {
-                                            seriesId: series.id,
-                                            error: error instanceof Error ? error.message : String(error),
-                                        });
-                                        return { seriesId: series.id, observations: [] };
-                                    }
-                                });
-
-                                const observationResults = await Promise.all(observationPromises);
+                                // Fetch observations with concurrency control to respect rate limits
+                                const MAX_CONCURRENT_OBSERVATION_REQUESTS = 5; // Limit concurrent observation requests
                                 const observationsMap = new Map<string, import('./types.js').FredObservation[]>();
-                                for (const result of observationResults) {
-                                    if (result.observations.length > 0) {
-                                        observationsMap.set(result.seriesId, result.observations);
+                                
+                                // Process observations in batches to control concurrency
+                                for (let i = 0; i < uniqueSeries.length; i += MAX_CONCURRENT_OBSERVATION_REQUESTS) {
+                                    const batch = uniqueSeries.slice(i, i + MAX_CONCURRENT_OBSERVATION_REQUESTS);
+                                    
+                                    const observationPromises = batch.map(async (series) => {
+                                        try {
+                                            const allObservations: import('./types.js').FredObservation[] = [];
+                                            let offset = 0;
+                                            const limit = MAX_API_PAGE_SIZE; // 1000 per request
+                                            let hasMore = true;
+
+                                            while (hasMore) {
+                                                const obsResponse = await fetchSeriesObservations(series.id, {
+                                                    limit,
+                                                    offset,
+                                                });
+
+                                                if (obsResponse.observations && obsResponse.observations.length > 0) {
+                                                    allObservations.push(...obsResponse.observations);
+                                                    
+                                                    // Check if there are more observations to fetch
+                                                    if (obsResponse.observations.length < limit || allObservations.length >= obsResponse.count) {
+                                                        hasMore = false;
+                                                    } else {
+                                                        offset += limit;
+                                                    }
+                                                } else {
+                                                    hasMore = false;
+                                                }
+                                            }
+
+                                            return { seriesId: series.id, observations: allObservations };
+                                        } catch (error) {
+                                            // Handle 403 Forbidden errors silently - these are API access restrictions for certain series
+                                            // Other errors are logged as warnings
+                                            const errorMessage = error instanceof Error ? error.message : String(error);
+                                            if (!errorMessage.includes('403 Forbidden')) {
+                                                log.warning(`⚠️ Failed to fetch observations for series ${series.id}`, {
+                                                    seriesId: series.id,
+                                                    error: errorMessage,
+                                                });
+                                            }
+                                            return { seriesId: series.id, observations: [] };
+                                        }
+                                    });
+
+                                    const observationResults = await Promise.all(observationPromises);
+                                    for (const result of observationResults) {
+                                        if (result.observations.length > 0) {
+                                            observationsMap.set(result.seriesId, result.observations);
+                                        }
                                     }
                                 }
 

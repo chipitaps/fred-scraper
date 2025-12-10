@@ -15,7 +15,6 @@ export interface ApiRequestParams {
     category_id?: number;
     filter_variable?: 'frequency' | 'units' | 'seasonal_adjustment';
     filter_value?: string;
-    search_type?: 'full_text' | 'series_id';
     order_by?: string;
     sort_order?: 'asc' | 'desc';
     limit?: number;
@@ -41,10 +40,6 @@ function buildQueryParams(params: ApiRequestParams): URLSearchParams {
     if (params.filter_variable && params.filter_value) {
         queryParams.append('filter_variable', params.filter_variable);
         queryParams.append('filter_value', params.filter_value);
-    }
-    
-    if (params.search_type) {
-        queryParams.append('search_type', params.search_type);
     }
     
     queryParams.append('order_by', params.order_by || 'search_rank');
@@ -235,13 +230,9 @@ export function calculateApiRequests(
         } else if (input.units) {
             params.filter_variable = 'units';
             params.filter_value = input.units;
-        } else if (input.seasonalAdjustment) {
+        } else         if (input.seasonalAdjustment) {
             params.filter_variable = 'seasonal_adjustment';
             params.filter_value = input.seasonalAdjustment;
-        }
-        
-        if (input.searchType) {
-            params.search_type = input.searchType;
         }
         
         params.order_by = input.sortOrder || 'search_rank';

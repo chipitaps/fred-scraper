@@ -41,23 +41,15 @@
             "enum": ["Seasonally Adjusted", "Not Seasonally Adjusted"],
             "editor": "select"
         },
-        "searchType": {
-            "title": "Search Type",
-            "type": "string",
-            "description": "Type of search to perform. 'full_text' searches titles, units, frequency, and tags (default). 'series_id' searches only series IDs.",
-            "enum": ["full_text", "series_id"],
-            "default": "full_text",
-            "editor": "select",
-            "sectionCaption": "Search & Sort Options",
-            "sectionDescription": "Configure how to search and sort the results"
-        },
         "sortOrder": {
             "title": "Sort Order",
             "type": "string",
             "description": "Field to sort results by",
             "enum": ["search_rank", "series_id", "title", "units", "frequency", "seasonal_adjustment", "realtime_start", "realtime_end", "last_updated", "observation_start", "observation_end", "popularity", "group_popularity"],
             "default": "search_rank",
-            "editor": "select"
+            "editor": "select",
+            "sectionCaption": "Search & Sort Options",
+            "sectionDescription": "Configure how to sort the results"
         },
         "orderBy": {
             "title": "Order By",

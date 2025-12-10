@@ -56,7 +56,6 @@ export interface Input {
     frequency?: string;
     units?: string;
     seasonalAdjustment?: string;
-    searchType?: 'full_text' | 'series_id';
     sortOrder?: string;
     orderBy?: 'asc' | 'desc';
     includeObservations?: boolean;
