@@ -10,13 +10,7 @@
             "editor": "textfield",
             "prefill": "cpi",
             "sectionCaption": "Search Parameters",
-            "sectionDescription": "Specify what to search for. Use either search text or a specific series ID."
-        },
-        "seriesId": {
-            "title": "Series ID",
-            "type": "string",
-            "description": "Specific FRED series identifier. Use this to fetch a specific series by ID. Example: 'CPIAUCSL', 'UNRATE', 'GDP'",
-            "editor": "textfield"
+            "sectionDescription": "Specify what to search for."
         },
         "categoryId": {
             "title": "Category ID",

@@ -12,7 +12,6 @@ const requestTimestamps: number[] = [];
 
 export interface ApiRequestParams {
     search_text?: string;
-    series_id?: string;
     category_id?: number;
     filter_variable?: 'frequency' | 'units' | 'seasonal_adjustment';
     filter_value?: string;
@@ -32,10 +31,6 @@ function buildQueryParams(params: ApiRequestParams): URLSearchParams {
     
     if (params.search_text) {
         queryParams.append('search_text', params.search_text);
-    }
-    
-    if (params.series_id) {
-        queryParams.append('series_id', params.series_id);
     }
     
     if (params.category_id !== undefined) {
@@ -224,17 +219,8 @@ export function calculateApiRequests(
             file_type: 'json',
         };
         
-        // Handle seriesId: if provided without searchText, use it as search_text with search_type='series_id'
-        if (input.seriesId && !input.searchText) {
-            params.search_text = input.seriesId;
-            params.search_type = 'series_id';
-        } else if (input.searchText) {
+        if (input.searchText) {
             params.search_text = input.searchText;
-        }
-        
-        // series_id parameter is only used when both searchText and seriesId are provided (filtering)
-        if (input.seriesId && input.searchText) {
-            params.series_id = input.seriesId;
         }
         
         if (input.categoryId !== undefined) {
@@ -254,8 +240,7 @@ export function calculateApiRequests(
             params.filter_value = input.seasonalAdjustment;
         }
         
-        // Only override search_type if explicitly provided (not when we set it for seriesId)
-        if (input.searchType && !(input.seriesId && !input.searchText)) {
+        if (input.searchType) {
             params.search_type = input.searchType;
         }
         

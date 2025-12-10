@@ -20,12 +20,12 @@ async function main() {
     log.info(userIsPaying ? '✅ Paid user detected' : '📋 Free user detected');
 
     log.info('🚀 Starting data collection...', {
-        searchQuery: input.searchText || input.seriesId || 'Not specified',
+        searchQuery: input.searchText || 'Not specified',
         maxItems: input.maxItems || 'Unlimited',
     });
 
-    if (!input.searchText && !input.seriesId) {
-        const errorMessage = 'Either searchText or seriesId must be provided';
+    if (!input.searchText) {
+        const errorMessage = 'searchText must be provided';
         log.error(`❌ ${errorMessage}`);
         await Actor.pushData([{ error: errorMessage }]);
         await Actor.exit();
@@ -166,16 +166,118 @@ async function main() {
                                     }
                                     return true;
                                 });
+                                
+                                // Re-sort after client-side filtering to maintain sort order
+                                const sortField = input.sortOrder || 'search_rank';
+                                const sortDirection = input.orderBy || 'desc';
+                                
+                                uniqueSeries.sort((a, b) => {
+                                    let aValue: any;
+                                    let bValue: any;
+                                    
+                                    switch (sortField) {
+                                        case 'series_id':
+                                            aValue = a.id;
+                                            bValue = b.id;
+                                            break;
+                                        case 'title':
+                                            aValue = a.title;
+                                            bValue = b.title;
+                                            break;
+                                        case 'units':
+                                            aValue = a.units;
+                                            bValue = b.units;
+                                            break;
+                                        case 'frequency':
+                                            aValue = a.frequency;
+                                            bValue = b.frequency;
+                                            break;
+                                        case 'seasonal_adjustment':
+                                            aValue = a.seasonal_adjustment;
+                                            bValue = b.seasonal_adjustment;
+                                            break;
+                                        case 'realtime_start':
+                                            aValue = a.realtime_start;
+                                            bValue = b.realtime_start;
+                                            break;
+                                        case 'realtime_end':
+                                            aValue = a.realtime_end;
+                                            bValue = b.realtime_end;
+                                            break;
+                                        case 'last_updated':
+                                            aValue = a.last_updated;
+                                            bValue = b.last_updated;
+                                            break;
+                                        case 'observation_start':
+                                            aValue = a.observation_start;
+                                            bValue = b.observation_start;
+                                            break;
+                                        case 'observation_end':
+                                            aValue = a.observation_end;
+                                            bValue = b.observation_end;
+                                            break;
+                                        case 'popularity':
+                                            aValue = a.popularity;
+                                            bValue = b.popularity;
+                                            break;
+                                        case 'group_popularity':
+                                            aValue = a.group_popularity;
+                                            bValue = b.group_popularity;
+                                            break;
+                                        case 'search_rank':
+                                        default:
+                                            // For search_rank, we can't recalculate, so maintain original order
+                                            return 0;
+                                    }
+                                    
+                                    // Handle null/undefined values
+                                    if (aValue === null || aValue === undefined) aValue = '';
+                                    if (bValue === null || bValue === undefined) bValue = '';
+                                    
+                                    // Compare values
+                                    let comparison = 0;
+                                    if (typeof aValue === 'string' && typeof bValue === 'string') {
+                                        comparison = aValue.localeCompare(bValue);
+                                    } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+                                        comparison = aValue - bValue;
+                                    } else {
+                                        comparison = String(aValue).localeCompare(String(bValue));
+                                    }
+                                    
+                                    return sortDirection === 'asc' ? comparison : -comparison;
+                                });
                             }
 
                             if (input.includeObservations && uniqueSeries.length > 0) {
-                                // Fetch observations in parallel
+                                // Fetch observations in parallel with pagination to get all observations
                                 const observationPromises = uniqueSeries.map(async (series) => {
                                     try {
-                                        const obsResponse = await fetchSeriesObservations(series.id, {
-                                            limit: 100,
-                                        });
-                                        return { seriesId: series.id, observations: obsResponse.observations || [] };
+                                        const allObservations: import('./types.js').FredObservation[] = [];
+                                        let offset = 0;
+                                        const limit = MAX_API_PAGE_SIZE; // 1000 per request
+                                        let hasMore = true;
+
+                                        while (hasMore) {
+                                            const obsResponse = await fetchSeriesObservations(series.id, {
+                                                limit,
+                                                offset,
+                                            });
+
+                                            if (obsResponse.observations && obsResponse.observations.length > 0) {
+                                                allObservations.push(...obsResponse.observations);
+                                                
+                                                // Check if there are more observations to fetch
+                                                if (obsResponse.observations.length < limit || allObservations.length >= obsResponse.count) {
+                                                    hasMore = false;
+                                                } else {
+                                                    offset += limit;
+                                                }
+                                            } else {
+                                                hasMore = false;
+                                            }
+                                        }
+
+                                        return { seriesId: series.id, observations: allObservations };
                                     } catch (error) {
                                         log.warning(`⚠️ Failed to fetch observations for series ${series.id}`, {
                                             seriesId: series.id,
@@ -201,6 +303,87 @@ async function main() {
                             }
 
                             totalProcessed += response.seriess.length;
+                            
+                            // Sort all accumulated series before pushing to maintain sort order
+                            // This is especially important when combining results from multiple API requests
+                            const sortField = input.sortOrder || 'search_rank';
+                            const sortDirection = input.orderBy || 'desc';
+                            
+                            allSeries.sort((a, b) => {
+                                let aValue: any;
+                                let bValue: any;
+                                
+                                switch (sortField) {
+                                    case 'series_id':
+                                        aValue = a.seriesId;
+                                        bValue = b.seriesId;
+                                        break;
+                                    case 'title':
+                                        aValue = a.title;
+                                        bValue = b.title;
+                                        break;
+                                    case 'units':
+                                        aValue = a.units;
+                                        bValue = b.units;
+                                        break;
+                                    case 'frequency':
+                                        aValue = a.frequency;
+                                        bValue = b.frequency;
+                                        break;
+                                    case 'seasonal_adjustment':
+                                        aValue = a.seasonalAdjustment;
+                                        bValue = b.seasonalAdjustment;
+                                        break;
+                                    case 'realtime_start':
+                                        aValue = a.realtimeStart;
+                                        bValue = b.realtimeStart;
+                                        break;
+                                    case 'realtime_end':
+                                        aValue = a.realtimeEnd;
+                                        bValue = b.realtimeEnd;
+                                        break;
+                                    case 'last_updated':
+                                        aValue = a.lastUpdated;
+                                        bValue = b.lastUpdated;
+                                        break;
+                                    case 'observation_start':
+                                        aValue = a.observationStart;
+                                        bValue = b.observationStart;
+                                        break;
+                                    case 'observation_end':
+                                        aValue = a.observationEnd;
+                                        bValue = b.observationEnd;
+                                        break;
+                                    case 'popularity':
+                                        aValue = a.popularity;
+                                        bValue = b.popularity;
+                                        break;
+                                    case 'group_popularity':
+                                        aValue = a.groupPopularity;
+                                        bValue = b.groupPopularity;
+                                        break;
+                                    case 'search_rank':
+                                    default:
+                                        // For search_rank, maintain insertion order (API already sorted)
+                                        return 0;
+                                }
+                                
+                                // Handle null/undefined values
+                                if (aValue === null || aValue === undefined) aValue = '';
+                                if (bValue === null || bValue === undefined) bValue = '';
+                                
+                                // Compare values
+                                let comparison = 0;
+                                if (typeof aValue === 'string' && typeof bValue === 'string') {
+                                    comparison = aValue.localeCompare(bValue);
+                                } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+                                    comparison = aValue - bValue;
+                                } else {
+                                    comparison = String(aValue).localeCompare(String(bValue));
+                                }
+                                
+                                return sortDirection === 'asc' ? comparison : -comparison;
+                            });
 
                             let seriesToPush = allSeries.slice(totalPushed);
                             if (maxItems) {

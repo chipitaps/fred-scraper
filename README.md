@@ -55,16 +55,6 @@ Here's what the input configuration looks like in JSON:
 }
 ```
 
-**Example with Series ID:**
-
-```json
-{
-    "seriesId": "CPIAUCSL",
-    "includeObservations": true,
-    "maxItems": 1
-}
-```
-
 ## Output
 
 After the Actor finishes its run, you'll get a dataset with the output. The length of the dataset depends on the amount of results you've set. You can download those results as an Excel, HTML, XML, JSON, and CSV document.

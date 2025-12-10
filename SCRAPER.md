@@ -21,15 +21,8 @@ Scrapes economic data series from the Federal Reserve Economic Data (FRED) API, 
   - Parameter: `search_text`
   - Format: String
   - Example: `"cpi"` or `"unemployment"`
-  - Required: No
+  - Required: Yes
   - Description: Full-text search across series titles, units, frequency, and tags
-
-- **Series ID**: 
-  - Parameter: `series_id`
-  - Format: String
-  - Example: `"CPIAUCSL"`
-  - Required: No
-  - Description: Specific series identifier
 
 - **Category ID**: 
   - Parameter: `category_id`

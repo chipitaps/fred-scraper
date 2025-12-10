@@ -52,7 +52,6 @@ export interface FredObservationsResponse {
 
 export interface Input {
     searchText?: string;
-    seriesId?: string;
     categoryId?: number;
     frequency?: string;
     units?: string;
