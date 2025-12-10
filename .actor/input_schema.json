@@ -1,0 +1,89 @@
+{
+    "title": "FRED Scraper Input",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "searchText": {
+            "title": "Search Text",
+            "type": "string",
+            "description": "Full-text search query to find economic data series. Searches across series titles, units, frequency, and tags. Example: 'cpi', 'unemployment', 'gdp'",
+            "editor": "textfield",
+            "prefill": "cpi"
+        },
+        "seriesId": {
+            "title": "Series ID",
+            "type": "string",
+            "description": "Specific FRED series identifier. Use this to fetch a specific series by ID. Example: 'CPIAUCSL', 'UNRATE', 'GDP'",
+            "editor": "textfield"
+        },
+        "categoryId": {
+            "title": "Category ID",
+            "type": "integer",
+            "description": "Filter results by FRED category ID. Example: 10 (National Accounts), 1 (Production & Business Activity)",
+            "editor": "number"
+        },
+        "frequency": {
+            "title": "Frequency",
+            "type": "string",
+            "description": "Filter by data frequency",
+            "enum": ["Daily", "Weekly", "Biweekly", "Monthly", "Quarterly", "Semiannual", "Annual"],
+            "editor": "select"
+        },
+        "units": {
+            "title": "Units",
+            "type": "string",
+            "description": "Filter by units of measurement",
+            "enum": ["Percent", "Index", "Dollars", "Thousands", "Millions", "Billions", "Ratio", "Number", "Rate", "Index 1982-1984=100", "Index 2012=100", "Index 2015=100", "Index 2017=100"],
+            "editor": "select"
+        },
+        "seasonalAdjustment": {
+            "title": "Seasonal Adjustment",
+            "type": "string",
+            "description": "Filter by seasonal adjustment",
+            "enum": ["Seasonally Adjusted", "Not Seasonally Adjusted"],
+            "editor": "select"
+        },
+        "searchType": {
+            "title": "Search Type",
+            "type": "string",
+            "description": "Type of search to perform. 'full_text' searches titles, units, frequency, and tags (default). 'series_id' searches only series IDs.",
+            "enum": ["full_text", "series_id"],
+            "default": "full_text",
+            "editor": "select"
+        },
+        "sortOrder": {
+            "title": "Sort Order",
+            "type": "string",
+            "description": "Field to sort results by",
+            "enum": ["search_rank", "series_id", "title", "units", "frequency", "seasonal_adjustment", "realtime_start", "realtime_end", "last_updated", "observation_start", "observation_end", "popularity", "group_popularity"],
+            "default": "search_rank",
+            "editor": "select"
+        },
+        "orderBy": {
+            "title": "Order By",
+            "type": "string",
+            "description": "Sort order direction",
+            "enum": ["asc", "desc"],
+            "default": "desc",
+            "editor": "select"
+        },
+        "includeObservations": {
+            "title": "Include Observations",
+            "type": "boolean",
+            "description": "Whether to include observation data (date-value pairs) for each series. This will fetch additional data and may increase processing time.",
+            "default": false,
+            "editor": "checkbox"
+        },
+        "maxItems": {
+            "title": "Max Items",
+            "type": "integer",
+            "description": "Maximum number of series to collect. Free users: Limited to 100. Paid users: Optional, max 1,000,000. Leave empty for unlimited (paid users only).",
+            "editor": "number",
+            "minimum": 1,
+            "maximum": 1000000,
+            "prefill": 10
+        }
+    },
+    "required": []
+}
+

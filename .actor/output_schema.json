@@ -1,0 +1,20 @@
+{
+    "actorOutputSchemaVersion": 1,
+    "title": "FRED Scraper Output Schema",
+    "description": "Output schema for FRED Scraper. Contains economic data series information including metadata, observations, and related details.",
+    "properties": {
+        "results": {
+            "type": "string",
+            "title": "Results",
+            "description": "Complete dataset with all scraped FRED series including metadata and observations",
+            "template": "{{links.apiDefaultDatasetUrl}}/items"
+        },
+        "overview": {
+            "type": "string",
+            "title": "Overview",
+            "description": "Overview view of FRED series with key fields displayed in a table format",
+            "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+        }
+    }
+}
+

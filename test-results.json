@@ -1,0 +1,321 @@
+[
+  {
+    "test": "Test 1: Frequency - Daily",
+    "status": "PASSED",
+    "duration": "5836ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 2: Frequency - Weekly",
+    "status": "PASSED",
+    "duration": "8352ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 3: Frequency - Biweekly",
+    "status": "PASSED",
+    "duration": "3257ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 4: Frequency - Monthly",
+    "status": "PASSED",
+    "duration": "6440ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 5: Frequency - Quarterly",
+    "status": "PASSED",
+    "duration": "3411ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 6: Frequency - Semiannual",
+    "status": "PASSED",
+    "duration": "3778ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 7: Frequency - Annual",
+    "status": "PASSED",
+    "duration": "10624ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 8: Units - Percent",
+    "status": "PASSED",
+    "duration": "3793ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 9: Units - Index",
+    "status": "PASSED",
+    "duration": "4806ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 10: Units - Dollars",
+    "status": "PASSED",
+    "duration": "3231ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 11: Units - Thousands",
+    "status": "PASSED",
+    "duration": "17556ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 12: Units - Millions",
+    "status": "PASSED",
+    "duration": "3504ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 13: Units - Billions",
+    "status": "PASSED",
+    "duration": "9924ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 14: Units - Ratio",
+    "status": "PASSED",
+    "duration": "3761ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 15: Units - Number",
+    "status": "PASSED",
+    "duration": "7424ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 16: Units - Rate",
+    "status": "PASSED",
+    "duration": "2144ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 17: Units - Index 1982-1984=100",
+    "status": "PASSED",
+    "duration": "1697ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 18: Units - Index 2012=100",
+    "status": "PASSED",
+    "duration": "5518ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 19: Units - Index 2015=100",
+    "status": "PASSED",
+    "duration": "4296ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 20: Units - Index 2017=100",
+    "status": "PASSED",
+    "duration": "5403ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 21: Seasonal Adjustment - Seasonally Adjusted",
+    "status": "PASSED",
+    "duration": "1818ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 22: Seasonal Adjustment - Not Seasonally Adjusted",
+    "status": "PASSED",
+    "duration": "7710ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 23: Search Type - full_text",
+    "status": "PASSED",
+    "duration": "1904ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 24: Search Type - series_id",
+    "status": "PASSED",
+    "duration": "1194ms",
+    "outputFiles": 1
+  },
+  {
+    "test": "Test 25: Sort Order - search_rank",
+    "status": "PASSED",
+    "duration": "3165ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 26: Sort Order - series_id",
+    "status": "PASSED",
+    "duration": "1101ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 27: Sort Order - title",
+    "status": "PASSED",
+    "duration": "2102ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 28: Sort Order - units",
+    "status": "PASSED",
+    "duration": "1114ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 29: Sort Order - frequency",
+    "status": "PASSED",
+    "duration": "1231ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 30: Sort Order - seasonal_adjustment",
+    "status": "PASSED",
+    "duration": "1166ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 31: Sort Order - realtime_start",
+    "status": "PASSED",
+    "duration": "12727ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 32: Sort Order - realtime_end",
+    "status": "PASSED",
+    "duration": "983ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 33: Sort Order - last_updated",
+    "status": "FAILED",
+    "error": "Error in output: Hard failure: All 3 retries exhausted for request 1. Aborting scraping process.",
+    "input": {
+      "searchText": "gdp",
+      "maxItems": 3,
+      "sortOrder": "last_updated"
+    }
+  },
+  {
+    "test": "Test 34: Sort Order - observation_start",
+    "status": "PASSED",
+    "duration": "31493ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 35: Sort Order - observation_end",
+    "status": "PASSED",
+    "duration": "3539ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 36: Sort Order - popularity",
+    "status": "PASSED",
+    "duration": "1133ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 37: Sort Order - group_popularity",
+    "status": "PASSED",
+    "duration": "1048ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 38: Order By - asc",
+    "status": "PASSED",
+    "duration": "3271ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 39: Order By - desc",
+    "status": "PASSED",
+    "duration": "906ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 40: Include Observations - true",
+    "status": "PASSED",
+    "duration": "1512ms",
+    "outputFiles": 1
+  },
+  {
+    "test": "Test 41: Include Observations - false",
+    "status": "PASSED",
+    "duration": "3534ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 42: Series ID - CPIAUCSL",
+    "status": "PASSED",
+    "duration": "938ms",
+    "outputFiles": 1
+  },
+  {
+    "test": "Test 43: Series ID - UNRATE",
+    "status": "PASSED",
+    "duration": "1082ms",
+    "outputFiles": 1
+  },
+  {
+    "test": "Test 44: Category ID - 10",
+    "status": "PASSED",
+    "duration": "4144ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 45: Category ID - 1",
+    "status": "PASSED",
+    "duration": "10572ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 46: Tag Names",
+    "status": "FAILED",
+    "error": "Error in output: Hard failure: All 3 retries exhausted for request 1. Aborting scraping process.",
+    "input": {
+      "searchText": "gdp",
+      "maxItems": 3,
+      "tagNames": "usa,quarterly"
+    }
+  },
+  {
+    "test": "Test 47: Exclude Tag Names",
+    "status": "PASSED",
+    "duration": "3846ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 48: Combination - All filters",
+    "status": "PASSED",
+    "duration": "954ms",
+    "outputFiles": 3
+  },
+  {
+    "test": "Test 49: Combination - With observations",
+    "status": "PASSED",
+    "duration": "1410ms",
+    "outputFiles": 1
+  },
+  {
+    "test": "Test 50: Combination - Complex",
+    "status": "FAILED",
+    "error": "Error in output: Hard failure: All 3 retries exhausted for request 1. Aborting scraping process.",
+    "input": {
+      "searchText": "gdp",
+      "maxItems": 2,
+      "frequency": "Quarterly",
+      "units": "Billions",
+      "seasonalAdjustment": "Seasonally Adjusted",
+      "categoryId": 10,
+      "tagNames": "usa",
+      "sortOrder": "last_updated",
+      "orderBy": "desc",
+      "includeObservations": false
+    }
+  }
+]

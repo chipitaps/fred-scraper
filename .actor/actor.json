@@ -1,0 +1,128 @@
+{
+    "actorSpecification": 1,
+    "name": "fred-scraper",
+    "title": "FRED Scraper",
+    "description": "Supercharge your economic research with our comprehensive FRED scraper! Automate collection of economic data series from the Federal Reserve Economic Data (FRED) API, including series information, observations, categories, and metadata. Get complete economic data including CPI, GDP, unemployment rates, and thousands of other economic indicators. Perfect for economists, researchers, analysts, and data scientists who need accurate, up-to-date economic intelligence without manual work.",
+    "version": "1.0",
+    "meta": {
+        "templateId": "ts-start-bun"
+    },
+    "input": "./input_schema.json",
+    "output": "./output_schema.json",
+    "dockerfile": "../Dockerfile",
+    "storages": {
+        "dataset": {
+            "actorSpecification": 1,
+            "views": {
+                "overview": {
+                    "title": "Overview",
+                    "transformation": {
+                        "fields": [
+                            "seriesId",
+                            "title",
+                            "units",
+                            "unitsShort",
+                            "frequency",
+                            "frequencyShort",
+                            "seasonalAdjustment",
+                            "seasonalAdjustmentShort",
+                            "lastUpdated",
+                            "observationStart",
+                            "observationEnd",
+                            "realtimeStart",
+                            "realtimeEnd",
+                            "popularity",
+                            "groupPopularity",
+                            "notes",
+                            "seriesUrl",
+                            "scrapedTimestamp",
+                            "error"
+                        ]
+                    },
+                    "display": {
+                        "component": "table",
+                        "properties": {
+                            "seriesId": {
+                                "label": "Series ID",
+                                "format": "text"
+                            },
+                            "title": {
+                                "label": "Title",
+                                "format": "text"
+                            },
+                            "units": {
+                                "label": "Units",
+                                "format": "text"
+                            },
+                            "unitsShort": {
+                                "label": "Units Short",
+                                "format": "text"
+                            },
+                            "frequency": {
+                                "label": "Frequency",
+                                "format": "text"
+                            },
+                            "frequencyShort": {
+                                "label": "Frequency Short",
+                                "format": "text"
+                            },
+                            "seasonalAdjustment": {
+                                "label": "Seasonal Adjustment",
+                                "format": "text"
+                            },
+                            "seasonalAdjustmentShort": {
+                                "label": "Seasonal Adjustment Short",
+                                "format": "text"
+                            },
+                            "lastUpdated": {
+                                "label": "Last Updated",
+                                "format": "date"
+                            },
+                            "observationStart": {
+                                "label": "Observation Start",
+                                "format": "date"
+                            },
+                            "observationEnd": {
+                                "label": "Observation End",
+                                "format": "date"
+                            },
+                            "realtimeStart": {
+                                "label": "Realtime Start",
+                                "format": "date"
+                            },
+                            "realtimeEnd": {
+                                "label": "Realtime End",
+                                "format": "date"
+                            },
+                            "popularity": {
+                                "label": "Popularity",
+                                "format": "number"
+                            },
+                            "groupPopularity": {
+                                "label": "Group Popularity",
+                                "format": "number"
+                            },
+                            "notes": {
+                                "label": "Notes",
+                                "format": "text"
+                            },
+                            "seriesUrl": {
+                                "label": "Series URL",
+                                "format": "link"
+                            },
+                            "scrapedTimestamp": {
+                                "label": "Scraped At",
+                                "format": "date"
+                            },
+                            "error": {
+                                "label": "Error",
+                                "format": "text"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
